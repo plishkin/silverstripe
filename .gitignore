@@ -1,4 +1,4 @@
-/silverstripe-cache/
+#/silverstripe-cache/
 /.env
 /vendor/
 /themes/simple/

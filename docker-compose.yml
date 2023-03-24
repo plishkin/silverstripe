@@ -1,0 +1,71 @@
+version: "3.7"
+
+services:
+  nginx:
+    image: silverstripe-nginx
+    build:
+      context: .
+      dockerfile: docker/nginx.Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "${APP_PORT}:80"
+    volumes:
+      - ./:/var/www
+    links:
+      - swoole
+      - swoole-ws
+    restart: always
+    depends_on:
+      - swoole
+      - swoole-ws
+  swoole:
+    image: silverstripe-swoole
+    container_name: silverstripe-swoole
+    build:
+      context: .
+      dockerfile: docker/swoole.Dockerfile
+      args:
+        - INSTALL_XDEBUG=${INSTALL_XDEBUG}
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    env_file:
+      - .env
+    volumes:
+      - ./:/var/www
+    ports:
+      - "80"
+    command: php vendor/silverstripe/framework/cli-script.php /dev/tasks/server-http-swoole-run
+    links:
+      - db
+      - swoole-ws
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+  swoole-ws:
+    image: silverstripe-swoole
+    container_name: swoole-ws
+    command: php vendor/silverstripe/framework/cli-script.php /dev/tasks/server-ws-swoole-run
+    links:
+      - db
+    ports:
+      - "6001"
+#    restart: always
+    volumes:
+      - .:/var/www
+  db:
+    image: mysql:5.7
+    ports:
+      - "${FORWARD_DB_PORT:-SS_DATABASE_PORT}:${SS_DATABASE_PORT}"
+    environment:
+      MYSQL_ROOT_PASSWORD: "${SS_DATABASE_PASSWORD}"
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: "${SS_DATABASE_NAME}"
+      MYSQL_USER: "${SS_DATABASE_USERNAME}"
+      MYSQL_PASSWORD: "${SS_DATABASE_PASSWORD}"
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    restart: always
+    healthcheck:
+      test: "exit 0"
+
