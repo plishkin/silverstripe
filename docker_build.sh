@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sudo chmod 0777 . ./storage ./silverstripe-cache
+sudo chmod 0777 . public silverstripe-cache storage
 
 docker-compose build
 
