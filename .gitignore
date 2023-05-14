@@ -5,4 +5,5 @@
 /_resources/
 /public/_resources/
 /.graphql-generated/
+/.composer/
 /public/_graphql/
