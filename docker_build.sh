@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-sudo chmod -R 0777 ./storage ./.graphql-generated
-sudo chown -R www-data ./storage ./public .graphql-generated
+sudo chmod 0777 . ./storage ./.graphql-generated ./silverstripe-cache
 
 docker-compose build
 
