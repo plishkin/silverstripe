@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sudo chmod 0777 . ./storage ./.graphql-generated ./silverstripe-cache
+sudo chmod 0777 . ./storage ./silverstripe-cache
 
 docker-compose build
 
