@@ -1,0 +1,6 @@
+---
+Name: app-extensions
+---
+SilverStripe\Security\Member:
+  extensions:
+    - 'App\extensions\MemberExtension'
