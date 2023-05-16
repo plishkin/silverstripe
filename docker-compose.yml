@@ -57,7 +57,7 @@ services:
     image: mysql:5.7
     container_name: db
     ports:
-      - "${FORWARD_DB_PORT:-SS_DATABASE_PORT}:${SS_DATABASE_PORT}"
+      - "${FORWARD_DB_PORT}:${SS_DATABASE_PORT}"
     environment:
       MYSQL_ROOT_PASSWORD: "${SS_DATABASE_PASSWORD}"
       MYSQL_ROOT_HOST: "%"
